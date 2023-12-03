@@ -2,6 +2,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 import plotly.graph_objects as go
+import matplotlib.pyplot as plt
 # Load data
 path = "zomato.csv"
 df = pd.read_csv(path)
@@ -298,16 +299,42 @@ if selected_category == 'Restaurantes':
     fig7.update_layout(title_text='Relação entre Reservas e Média de Valor para Dois')
     st.plotly_chart(fig7)
 
-if selected_category == 'Tipo de Culinária':
-    st.title('**Informações sobre os tipos de culinária**')
-    italian_restaurants = df[df['Cuisines'].str.contains('Italian')].dropna(subset=['Aggregate rating'])
-    fig = px.bar(italian_restaurants, x='Restaurant Name', y='Aggregate rating',
-                 labels={'Restaurant Name': 'Restaurante', 'Aggregate rating': 'Nota Média'},
-                 title='Médias de Avaliação dos Restaurantes Italianos',
-                 color='Aggregate rating')
 
-    fig.update_traces(textposition='outside')
-    fig.update_layout(xaxis_title='Restaurante', yaxis_title='Nota Média')
+def find_restaurant_by_rating(df, cuisine_type, find_max=True):
+    cuisine_restaurants = df[df['Cuisines'] == cuisine_type].copy()
+    cuisine_restaurants['Average Rating'] = cuisine_restaurants.groupby('Restaurant Name')['Aggregate rating'].transform('mean')
     
-    st.plotly_chart(fig)
+    if find_max:
+        restaurant_info = cuisine_restaurants.loc[cuisine_restaurants['Average Rating'].idxmax()]
+    else:
+        restaurant_info = cuisine_restaurants.loc[cuisine_restaurants['Average Rating'].idxmin()]
+    
+    return restaurant_info
+
+if selected_category == 'Tipo de Culinária':
    
+    st.title('**Informações sobre Tipos de Culinária**')
+
+    cuisines_list = df['Cuisines'].str.split(', ', expand=True).stack().unique()
+
+    # Escolher a opção para análise
+    cuisine_option = st.selectbox('Escolha o tipo de culinária:', cuisines_list)
+
+    # Pergunta 1: Restaurante com a maior média de avaliação para o tipo de culinária escolhido
+    top_cuisine_restaurant = find_restaurant_by_rating(df, cuisine_option, find_max=True)
+    st.write(f"**Restaurante com a Maior Média de Avaliação de tipo de Culinária ({cuisine_option.capitalize()}):**")
+    st.write(top_cuisine_restaurant[['Restaurant Name', 'Average Rating']])
+
+    # Pergunta 2: Restaurante com a menor média de avaliação para o tipo de culinária escolhido
+    bottom_cuisine_restaurant = find_restaurant_by_rating(df, cuisine_option, find_max=False)
+    st.write(f"**Restaurante com a Menor Média de Avaliação do tipo de Culinária({cuisine_option.capitalize()}):**")
+    st.write(bottom_cuisine_restaurant[['Restaurant Name', 'Average Rating']])
+
+    # Gráfico: Média de avaliação para o tipo de culinária escolhido
+    cuisine_avg_rating = df[df['Cuisines'].fillna('').str.contains(cuisine_option)].groupby('City')['Aggregate rating'].mean().reset_index()
+    cuisine_avg_rating.columns = ['Cidade', 'Média de Avaliação']
+    fig_cuisine = px.bar(cuisine_avg_rating, x='Cidade', y='Média de Avaliação', 
+                         labels={'Cidade': 'Cidade', 'Média de Avaliação': 'Média de Avaliação'},
+                         title=f'Média de Avaliação para Culinária {cuisine_option.capitalize()} por Cidade')
+    st.plotly_chart(fig_cuisine)
+
