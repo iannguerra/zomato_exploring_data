@@ -14,22 +14,23 @@ A Cury Company gera dados significativos sobre entregas, tipos de pedidos, condi
 ## Estratégia da Solução
 O projeto desenvolve um painel estratégico com métricas que refletem as três principais visões do modelo de negócio da empresa.
 
-### Visão do Crescimento da Empresa
-1. Quantidade de pedidos por dia.
-2. Porcentagem de pedidos por condições de trânsito.
-3. Quantidade de pedidos por tipo e por cidade.
-4. Pedidos por semana.
-5. Quantidade de pedidos por tipo de entrega.
-6. Quantidade de pedidos por condições de trânsito e tipo de cidade.
+### Visão Geral
+1. Quantidade de restaurantes cadastrados.
+2. Quantidade de cidades cadastradas.
+3. Quantidade de culinárias registradas.
+4. Quantidade de países cadastrados
+5. Quantidade de avaliaçõees totais.
 
-### Visão do Crescimento dos Restaurantes
-1. Quantidade de pedidos únicos.
-2. Distância média percorrida.
-3. Tempo médio de entrega durante festivais e dias normais.
-4. Desvio padrão do tempo de entrega durante festivais e dias normais.
-5. Tempo de entrega médio por cidade.
-6. Distribuição do tempo médio de entrega por cidade.
-7. Tempo médio de entrega por tipo de pedido.
+### Visão dos paísees
+1. Quantidade de cidades registradas por país.
+2. Quantidade de restaurantes registrados por país.
+3. Quantidade de restaurantes com nível de preço igual a 4 por país.
+4. Quantidade de tipos de culinária distintos por país.
+5. Quantidade total de avaliações por país.
+6. Quantidade de restaurantes que fazem entrega por país.
+7. Quantidade de restaurantes que aceitam reservas por país.
+8. Média das notas médias por país.
+9. Média de preeço de um prato para dois por país.
 
 ### Visão do Crescimento dos Entregadores
 1. Idade do entregador mais velho e do mais novo.
