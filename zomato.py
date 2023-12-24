@@ -215,7 +215,7 @@ if selected_category == 'Cidades':
     fig4 = px.bar(avg_price_for_two_by_city, x='Cidade', y='Valor Médio de um Prato para Dois', 
                   labels={'Cidade': 'Cidade', 'Valor Médio de um Prato para Dois': 'Valor Médio de um Prato para Dois'},
                   log_y=True)
-    fig4.update_layout(title_text='Valor Médio de um Prato para Dois por Cidade (Escala Logarítmica)')
+    fig4.update_layout(title_text='Valor Médio de um Prato para Dois por Cidade')
     st.plotly_chart(fig4)
 
     city_most_cuisines = df.groupby('City')['Cuisines'].nunique().idxmax()
@@ -282,7 +282,7 @@ if selected_category == 'Restaurantes':
 
     fig5 = px.bar(df[(df['Cuisines'].str.contains('Brazilian')) & (df['Country Code'] == 30)].nlargest(10, 'Aggregate rating'), x='Restaurant Name', y='Aggregate rating',
                   labels={'Restaurant Name': 'Restaurante', 'Aggregate rating': 'Nota Média'},
-                  title='Top 10 Restaurantes de Culinária Brasileira do Brasil com Maior Nota Média')
+                  title='Top 10 Restaurantes de Culinária Brasileira com Maior Nota Média')
     st.plotly_chart(fig5)
     online_ordering_vs_reviews = df.groupby('Has Online delivery')['Votes'].mean().reset_index()
     online_ordering_vs_reviews.columns = ['Aceita Pedido Online', 'Média de Avaliações']
